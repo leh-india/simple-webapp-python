@@ -1,0 +1,61 @@
+pipeline {
+
+    agent {
+        label 'ansibleslave'
+    }
+
+    parameters {
+        choice(choices: ['no', 'yes'], description: 'Deploy Ansible ?', name: 'deploy_code')
+    }
+
+    environment {
+      project_name ='normal_pipeline'
+    }
+
+    options {
+      buildDiscarder(logRotator(numToKeepStr: '16'))
+    }    
+
+stages {
+        stage('Checkout'){
+            steps {
+                sh "echo checkout code"
+		git 'https://github.com/kaza514/simple-webapp.git'
+            }
+        }
+
+        stage('Build Code'){
+            steps {
+                sh "echo Project name is ${project_name}"
+                sh "echo Enter the Stepts to Build the code"
+            }
+        }
+
+        stage('Publish code to Production'){
+            when {
+                allOf {
+                    expression { params.deploy_code != 'no' }
+                }
+            }
+            steps {
+                 echo 'Enter the Stepts to Publish the code'
+		 sh 'hostname'
+                 sh 'ansible --version'
+		 sh 'ls -l'
+		 sh 'ansible -i inventory all -m ping'
+            }
+        }
+
+    }
+    post {
+        success {
+            echo 'Deployment was successful. Sending notification.'
+        }
+        unstable {
+            echo 'I am unstable :/'
+        }
+        failure {
+            echo 'Build failed. Slack notification.'
+        }
+    }    
+}
