@@ -12,7 +12,7 @@ mysql_database_host = 'MYSQL_DATABASE_HOST' in os.environ and os.environ['MYSQL_
 app.config['MYSQL_DATABASE_USER'] = 'admin'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'Admin123'
 app.config['MYSQL_DATABASE_DB'] = 'employee_db'
-app.config['MYSQL_DATABASE_HOST'] = 'employee.cxvgblghposi.us-east-1.rds.amazonaws.com'
+app.config['MYSQL_DATABASE_HOST'] = 'python.cxvgblghposi.us-east-1.rds.amazonaws.com'
 mysql.init_app(app)
 
 conn = mysql.connect()
