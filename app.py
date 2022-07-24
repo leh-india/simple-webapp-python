@@ -1,17 +1,18 @@
 import os
 from flask import Flask
 from flaskext.mysql import MySQL      # For newer versions of flask-mysql 
-from flask.ext.mysql import MySQL   # For older versions of flask-mysql
+# from flask.ext.mysql import MySQL   # For older versions of flask-mysql
 app = Flask(__name__)
 
 mysql = MySQL()
 
-mysql_database_host = 'employee.cxvgblghposi.us-east-1.rds.amazonaws.com' in os.environ and os.environ['MYSQL_DATABASE_HOST'] or  'localhost'
+mysql_database_host = 'MYSQL_DATABASE_HOST' in os.environ and os.environ['MYSQL_DATABASE_HOST'] or  'localhost'
 
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'admin'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'Admin123'
 app.config['MYSQL_DATABASE_DB'] = 'employee_db'
+app.config['MYSQL_DATABASE_HOST'] = 'employee.cxvgblghposi.us-east-1.rds.amazonaws.com'
 mysql.init_app(app)
 
 conn = mysql.connect()
